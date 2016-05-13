@@ -113,7 +113,6 @@ namespace WebExpenseTracker_WEB.Controllers
             original.TransactionAmount = value.TransactionAmount;
             original.TransactionFundSourceID = value.TransactionFundSourceId;
             original.TransactionIsCredit = value.TransactionIsCredit;
-            original
         }
 
         // DELETE api/values/5
