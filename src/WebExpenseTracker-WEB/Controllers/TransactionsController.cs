@@ -13,9 +13,9 @@ using WebExpenseTracker_WEB.Models.API.Transaction;
 namespace WebExpenseTracker_WEB.Controllers
 {
     [Route("api/[controller]")]
-    public class TransactionController : Controller
+    public class TransactionsController : Controller
     {
-        // GET: api/values
+        // GET: api/transactions
         [HttpGet]
         public IEnumerable<TransactionModel> Get()
         {
@@ -36,7 +36,7 @@ namespace WebExpenseTracker_WEB.Controllers
                 });
         }
 
-        // GET api/values/5
+        // GET api/transactions/5
         [HttpGet("{id}")]
         public TransactionModel Get(int id)
         {
@@ -65,7 +65,7 @@ namespace WebExpenseTracker_WEB.Controllers
             
         }
 
-        // POST api/values
+        // POST api/transactions
         [HttpPost]
         public int Post([FromBody]TransactionAddModel value)
         {
@@ -99,7 +99,7 @@ namespace WebExpenseTracker_WEB.Controllers
             }
         }
 
-        // PUT api/values/5
+        // PUT api/transactions/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]TransactionUpdateModel value)
         {
@@ -115,10 +115,20 @@ namespace WebExpenseTracker_WEB.Controllers
             original.TransactionIsCredit = value.TransactionIsCredit;
         }
 
-        // DELETE api/values/5
+        // DELETE api/transactions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var context = new WebExpenseTrackerContext();
+            if (!context.Transactions.Any(x => x.TransactionID == id && x.TransactionDeleted == false))
+            {
+                HttpContext.Response.StatusCode = 404;
+                return;
+            }
+            var trans = context.Transactions.Single(x => x.TransactionID == id);
+            trans.TransactionDeleted = true;
+            context.SaveChanges();
+
         }
     }
 }
