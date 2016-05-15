@@ -141,13 +141,6 @@ namespace WebExpenseTracker_WEB.EF
 
                 entity.HasOne(d => d.TransactionUser).WithMany(p => p.Transactions).HasForeignKey(d => d.TransactionUserID).OnDelete(DeleteBehavior.Restrict);
             });
-
-            modelBuilder.Entity<sysdiagrams>(entity =>
-            {
-                entity.HasKey(e => e.diagram_id);
-
-                entity.Property(e => e.definition).HasColumnType("varbinary");
-            });
         }
 
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
@@ -160,6 +153,5 @@ namespace WebExpenseTracker_WEB.EF
         public virtual DbSet<Tags> Tags { get; set; }
         public virtual DbSet<TransactionTags> TransactionTags { get; set; }
         public virtual DbSet<Transactions> Transactions { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

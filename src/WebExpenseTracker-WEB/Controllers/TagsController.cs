@@ -38,21 +38,53 @@ namespace WebExpenseTracker_WEB.Controllers
 
         // POST api/tags
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Tag value)
         {
+            var context = new WebExpenseTrackerContext();
+            if (string.IsNullOrEmpty(value.TagName) || !context.Tags.Any(x=>x.TagName == value.TagName))
+            {
+                HttpContext.Response.StatusCode = 409;
+                return;
+            }
+
+            var newTag = new Tags
+            {
+                TagName = value.TagName,
+                TagUserID = User.GetUserId()
+            };
+            context.Tags.Add(newTag);
+            context.SaveChanges();
 
         }
 
         // PUT api/tags/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Tag value)
         {
+            var context = new WebExpenseTrackerContext();
+            if (!context.Tags.Any(x => x.TagID == value.TagId))
+            {
+                HttpContext.Response.StatusCode = 404;
+                return;
+            }
+            var oldTag = context.Tags.Single(x => x.TagID == value.TagId);
+            oldTag.TagName = value.TagName;
+            context.SaveChanges();
         }
 
         // DELETE api/tags/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var context = new WebExpenseTrackerContext();
+            if (!context.Tags.Any(x => x.TagID == id))
+            {
+                HttpContext.Response.StatusCode = 404;
+                return;
+            }
+            var tobeRemoved = context.Tags.Single(x => x.TagID == id);
+            context.Tags.Remove(tobeRemoved);
+            context.SaveChanges();
         }
     }
 }
