@@ -1,5 +1,6 @@
-using Microsoft.Data.Entity;
+﻿using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Metadata;
+using WebExpenseTracker_WEB.Models.API.TransactionTag;
 
 namespace WebExpenseTracker_WEB.EF
 {
@@ -153,5 +154,6 @@ namespace WebExpenseTracker_WEB.EF
         public virtual DbSet<Tags> Tags { get; set; }
         public virtual DbSet<TransactionTags> TransactionTags { get; set; }
         public virtual DbSet<Transactions> Transactions { get; set; }
+        public DbSet<TransactionTag> TransactionTag { get; set; }
     }
 }

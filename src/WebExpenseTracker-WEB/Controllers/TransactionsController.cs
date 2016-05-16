@@ -12,6 +12,7 @@ using WebExpenseTracker_WEB.Models.API.Transaction;
 
 namespace WebExpenseTracker_WEB.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class TransactionsController : Controller
     {

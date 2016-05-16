@@ -11,6 +11,7 @@ using WebExpenseTracker_WEB.Models.API.FundSource;
 
 namespace WebExpenseTracker_WEB.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class FundSourcesController : Controller
     {
@@ -84,7 +85,15 @@ namespace WebExpenseTracker_WEB.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-
+            var context = new WebExpenseTrackerContext();
+            if (!context.FundSources.Any(x => x.FundSourceID == id && x.FundSourceUserID == User.GetUserId()))
+            {
+                HttpContext.Response.StatusCode = 404;
+                return;
+            }
+            var oldRecord = context.FundSources.Single(x => x.FundSourceID == id);
+            context.FundSources.Remove(oldRecord);
+            context.SaveChanges();
         }
     }
 }

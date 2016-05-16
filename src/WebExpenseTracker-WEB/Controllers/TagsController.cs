@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace WebExpenseTracker_WEB.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class TagsController : Controller
     {
