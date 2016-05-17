@@ -1,99 +1,146 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Data.Entity;
 using WebExpenseTracker_WEB.EF;
-using System.Security.Claims;
-using WebExpenseTracker_WEB.Models.API.FundSource;
-
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebExpenseTracker_WEB.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/FundSources")]
     public class FundSourcesController : Controller
     {
-        // GET: api/fundsources
+        private WebExpenseTrackerContext _context;
+
+        public FundSourcesController(WebExpenseTrackerContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/FundSources
         [HttpGet]
-        public IEnumerable<FundSource> Get()
+        public IEnumerable<FundSources> GetFundSources()
         {
-            var context = new WebExpenseTrackerContext();
-            return context.FundSources
-                .Where(x => x.FundSourceUserID == User.GetUserId())
-                .Select(x => new FundSource
-                {
-                    FundSourceID = x.FundSourceID,
-                    FundSourceName = x.FundSourceName,
-                    FundSourceUserID = x.FundSourceUserID,
-                    FundSourceDeleted = x.FundSourceDeleted,
-                    FundSourceDTS = x.FundSourceDTS
-                });
+            return _context.FundSources;
         }
 
-        // GET api/fundsources/5
-        [HttpGet("{id}")]
-        public FundSource Get(int id)
+        // GET: api/FundSources/5
+        [HttpGet("{id}", Name = "GetFundSources")]
+        public IActionResult GetFundSources([FromRoute] int id)
         {
-            var context = new WebExpenseTrackerContext();
-            if (!context.FundSources.Any(x => x.FundSourceUserID == User.GetUserId() && x.FundSourceID == id && x.FundSourceDeleted == false))
+            if (!ModelState.IsValid)
             {
-                HttpContext.Response.StatusCode = 404;
-                return null;
+                return HttpBadRequest(ModelState);
             }
-            return context.FundSources.Select(x => new FundSource {FundSourceID = x.FundSourceID, FundSourceName = x.FundSourceName }).Single(x => x.FundSourceID == id);
-        }
 
-        // POST api/fundsources
-        [HttpPost]
-        public void Post([FromBody] FundSource value)
-        {
-            var context = new WebExpenseTrackerContext();
-            if (context.FundSources.Any(x => x.FundSourceName == value.FundSourceName && x.FundSourceUserID == User.GetUserId()))
+            FundSources fundSources = _context.FundSources.Single(m => m.FundSourceID == id);
+
+            if (fundSources == null)
             {
-                HttpContext.Response.StatusCode = 409;
-                return;
+                return HttpNotFound();
             }
-            var newFS = new FundSources
-            {
-                FundSourceName = value.FundSourceName,
-                FundSourceDTS = DateTime.Now,
-                FundSourceDeleted = false,
-                FundSourceUserID = User.GetUserId()
-            };
-            context.FundSources.Add(newFS);
-            context.SaveChanges();
+
+            return Ok(fundSources);
         }
 
-        // PUT api/fundsources/5
+        // PUT: api/FundSources/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]FundSource value)
+        public IActionResult PutFundSources(int id, [FromBody] FundSources fundSources)
         {
-            var context = new WebExpenseTrackerContext();
-            if (!context.FundSources.Any(x => x.FundSourceID == id && x.FundSourceUserID == User.GetUserId()))
+            if (!ModelState.IsValid)
             {
-                HttpContext.Response.StatusCode = 404;
-                return;
+                return HttpBadRequest(ModelState);
             }
-            var oldFS = context.FundSources.Single(x => x.FundSourceID == id);
-            oldFS.FundSourceName = value.FundSourceName;
-            context.SaveChanges();
+
+            if (id != fundSources.FundSourceID)
+            {
+                return HttpBadRequest();
+            }
+
+            _context.Entry(fundSources).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FundSourcesExists(id))
+                {
+                    return HttpNotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
         }
 
-        // DELETE api/fundsources/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // POST: api/FundSources
+        [HttpPost]
+        public IActionResult PostFundSources([FromBody] FundSources fundSources)
         {
-            var context = new WebExpenseTrackerContext();
-            if (!context.FundSources.Any(x => x.FundSourceID == id && x.FundSourceUserID == User.GetUserId()))
+            if (!ModelState.IsValid)
             {
-                HttpContext.Response.StatusCode = 404;
-                return;
+                return HttpBadRequest(ModelState);
             }
-            var oldRecord = context.FundSources.Single(x => x.FundSourceID == id);
-            context.FundSources.Remove(oldRecord);
-            context.SaveChanges();
+
+            _context.FundSources.Add(fundSources);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                if (FundSourcesExists(fundSources.FundSourceID))
+                {
+                    return new HttpStatusCodeResult(StatusCodes.Status409Conflict);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtRoute("GetFundSources", new { id = fundSources.FundSourceID }, fundSources);
+        }
+
+        // DELETE: api/FundSources/5
+        [HttpDelete("{id}")]
+        public IActionResult DeleteFundSources(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            FundSources fundSources = _context.FundSources.Single(m => m.FundSourceID == id);
+            if (fundSources == null)
+            {
+                return HttpNotFound();
+            }
+
+            _context.FundSources.Remove(fundSources);
+            _context.SaveChanges();
+
+            return Ok(fundSources);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private bool FundSourcesExists(int id)
+        {
+            return _context.FundSources.Count(e => e.FundSourceID == id) > 0;
         }
     }
 }

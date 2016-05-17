@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebExpenseTracker_WEB.EF;
+using WebExpenseTracker_WEB;
 using WebExpenseTracker_WEB.Models.API.Tags;
 
 namespace WebExpenseTracker_WEB.Models.API.Transaction

@@ -1,0 +1,1 @@
+C:\Users\david.campbell\Documents\Visual Studio 2015\Projects\WebExpenseTracker-WEB\artifacts\obj\WebExpenseTracker-WEB\Debug\WebExpenseTracker-WEB.xprojResolveAssemblyReference.cache

@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "WebExpenseTracker-WEB", "src\WebExpenseTracker-WEB\WebExpenseTracker-WEB.xproj", "{25A84023-8BF7-4209-BDB2-67F2F7DB70CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebExpenseTracker-DataAccess", "WebExpenseTracker-DataAccess\WebExpenseTracker-DataAccess.csproj", "{8DB924BD-772B-495B-9269-41BA44DB1D60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{25A84023-8BF7-4209-BDB2-67F2F7DB70CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25A84023-8BF7-4209-BDB2-67F2F7DB70CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25A84023-8BF7-4209-BDB2-67F2F7DB70CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DB924BD-772B-495B-9269-41BA44DB1D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB924BD-772B-495B-9269-41BA44DB1D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB924BD-772B-495B-9269-41BA44DB1D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB924BD-772B-495B-9269-41BA44DB1D60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

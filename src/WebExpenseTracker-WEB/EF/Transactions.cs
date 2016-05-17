@@ -11,7 +11,7 @@ namespace WebExpenseTracker_WEB.EF
         }
 
         public int TransactionID { get; set; }
-        public float TransactionAmount { get; set; }
+        public double TransactionAmount { get; set; }
         public bool TransactionDeleted { get; set; }
         public DateTime TransactionDTS { get; set; }
         public int TransactionFundSourceID { get; set; }
@@ -20,6 +20,5 @@ namespace WebExpenseTracker_WEB.EF
 
         public virtual ICollection<TransactionTags> TransactionTags { get; set; }
         public virtual FundSources TransactionFundSource { get; set; }
-        public virtual AspNetUsers TransactionUser { get; set; }
     }
 }

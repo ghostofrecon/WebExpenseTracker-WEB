@@ -6,6 +6,10 @@
   },
 
   "dependencies": {
+    "angular-spinner": "0.8.0",
+    "angularjs": "1.5.5",
+    "AngularJS.Animate": "1.5.5",
+    "AngularJS.Route": "1.5.5",
     "EntityFramework.Commands": "7.0.0-rc1-final",
     "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
     "EntityFramework.MicrosoftSqlServer.Design": "7.0.0-rc1-final",
@@ -35,7 +39,11 @@
   },
 
   "frameworks": {
-    "dnx451": { }
+    "dnx451": {
+      "dependencies": {
+        "WebExpenseTracker-DataAccess": "1.0.0-*"
+      }
+    }
   },
 
   "exclude": [

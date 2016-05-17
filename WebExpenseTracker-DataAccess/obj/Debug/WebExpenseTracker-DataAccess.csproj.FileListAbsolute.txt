@@ -1,0 +1,5 @@
+C:\Users\david.campbell\Documents\Visual Studio 2015\Projects\WebExpenseTracker-WEB\WebExpenseTracker-DataAccess\bin\Debug\WebExpenseTracker-DataAccess.dll
+C:\Users\david.campbell\Documents\Visual Studio 2015\Projects\WebExpenseTracker-WEB\WebExpenseTracker-DataAccess\bin\Debug\WebExpenseTracker-DataAccess.pdb
+C:\Users\david.campbell\Documents\Visual Studio 2015\Projects\WebExpenseTracker-WEB\WebExpenseTracker-DataAccess\obj\Debug\WebExpenseTracker-DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\david.campbell\Documents\Visual Studio 2015\Projects\WebExpenseTracker-WEB\WebExpenseTracker-DataAccess\obj\Debug\WebExpenseTracker-DataAccess.dll
+C:\Users\david.campbell\Documents\Visual Studio 2015\Projects\WebExpenseTracker-WEB\WebExpenseTracker-DataAccess\obj\Debug\WebExpenseTracker-DataAccess.pdb

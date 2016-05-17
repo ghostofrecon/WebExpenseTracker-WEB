@@ -8,57 +8,57 @@ using WebExpenseTracker_WEB.EF;
 namespace WebExpenseTracker_WEB.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Transactions")]
-    public class TransactionsController : Controller
+    [Route("api/TransactionTags")]
+    public class TransactionTagsController : Controller
     {
         private WebExpenseTrackerContext _context;
 
-        public TransactionsController(WebExpenseTrackerContext context)
+        public TransactionTagsController(WebExpenseTrackerContext context)
         {
             _context = context;
         }
 
-        // GET: api/Transactions
+        // GET: api/TransactionTags
         [HttpGet]
-        public IEnumerable<Transactions> GetTransactions()
+        public IEnumerable<TransactionTags> GetTransactionTags()
         {
-            return _context.Transactions;
+            return _context.TransactionTags;
         }
 
-        // GET: api/Transactions/5
-        [HttpGet("{id}", Name = "GetTransactions")]
-        public IActionResult GetTransactions([FromRoute] int id)
+        // GET: api/TransactionTags/5
+        [HttpGet("{id}", Name = "GetTransactionTags")]
+        public IActionResult GetTransactionTags([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            Transactions transactions = _context.Transactions.Single(m => m.TransactionID == id);
+            TransactionTags transactionTags = _context.TransactionTags.Single(m => m.TransactionTagID == id);
 
-            if (transactions == null)
+            if (transactionTags == null)
             {
                 return HttpNotFound();
             }
 
-            return Ok(transactions);
+            return Ok(transactionTags);
         }
 
-        // PUT: api/Transactions/5
+        // PUT: api/TransactionTags/5
         [HttpPut("{id}")]
-        public IActionResult PutTransactions(int id, [FromBody] Transactions transactions)
+        public IActionResult PutTransactionTags(int id, [FromBody] TransactionTags transactionTags)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            if (id != transactions.TransactionID)
+            if (id != transactionTags.TransactionTagID)
             {
                 return HttpBadRequest();
             }
 
-            _context.Entry(transactions).State = EntityState.Modified;
+            _context.Entry(transactionTags).State = EntityState.Modified;
 
             try
             {
@@ -66,7 +66,7 @@ namespace WebExpenseTracker_WEB.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TransactionsExists(id))
+                if (!TransactionTagsExists(id))
                 {
                     return HttpNotFound();
                 }
@@ -79,23 +79,23 @@ namespace WebExpenseTracker_WEB.Controllers
             return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
         }
 
-        // POST: api/Transactions
+        // POST: api/TransactionTags
         [HttpPost]
-        public IActionResult PostTransactions([FromBody] Transactions transactions)
+        public IActionResult PostTransactionTags([FromBody] TransactionTags transactionTags)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            _context.Transactions.Add(transactions);
+            _context.TransactionTags.Add(transactionTags);
             try
             {
                 _context.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                if (TransactionsExists(transactions.TransactionID))
+                if (TransactionTagsExists(transactionTags.TransactionTagID))
                 {
                     return new HttpStatusCodeResult(StatusCodes.Status409Conflict);
                 }
@@ -105,28 +105,28 @@ namespace WebExpenseTracker_WEB.Controllers
                 }
             }
 
-            return CreatedAtRoute("GetTransactions", new { id = transactions.TransactionID }, transactions);
+            return CreatedAtRoute("GetTransactionTags", new { id = transactionTags.TransactionTagID }, transactionTags);
         }
 
-        // DELETE: api/Transactions/5
+        // DELETE: api/TransactionTags/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteTransactions(int id)
+        public IActionResult DeleteTransactionTags(int id)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            Transactions transactions = _context.Transactions.Single(m => m.TransactionID == id);
-            if (transactions == null)
+            TransactionTags transactionTags = _context.TransactionTags.Single(m => m.TransactionTagID == id);
+            if (transactionTags == null)
             {
                 return HttpNotFound();
             }
 
-            _context.Transactions.Remove(transactions);
+            _context.TransactionTags.Remove(transactionTags);
             _context.SaveChanges();
 
-            return Ok(transactions);
+            return Ok(transactionTags);
         }
 
         protected override void Dispose(bool disposing)
@@ -138,9 +138,9 @@ namespace WebExpenseTracker_WEB.Controllers
             base.Dispose(disposing);
         }
 
-        private bool TransactionsExists(int id)
+        private bool TransactionTagsExists(int id)
         {
-            return _context.Transactions.Count(e => e.TransactionID == id) > 0;
+            return _context.TransactionTags.Count(e => e.TransactionTagID == id) > 0;
         }
     }
 }
