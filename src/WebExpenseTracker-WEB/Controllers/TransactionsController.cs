@@ -7,6 +7,7 @@ using Microsoft.AspNet.Mvc;
 using WebExpenseTracker_WEB.EF;
 using WebExpenseTracker_WEB.Models.API.Tags;
 using WebExpenseTracker_WEB.Models.API.Transaction;
+using WebExpenseTracker_WEB.Models.API.TransactionTag;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,21 +21,42 @@ namespace WebExpenseTracker_WEB.Controllers
         [HttpGet]
         public IEnumerable<TransactionModel> Get()
         {
+            var ret = new List<TransactionModel>();
             //Gets the context
             var context = new WebExpenseTrackerContext();
             //Returns list casted into APIDataModel
-            return context.Transactions
-                .Where(x => x.TransactionUserID == User.GetUserId() && x.TransactionDeleted == false)
-                .Select(x => new TransactionModel
+            if (context.Transactions.Any(x => x.TransactionUserID == User.GetUserId()))
+            {
+                var transactions = context.Transactions.Where(x => x.TransactionUserID == User.GetUserId());
+                foreach (var trans in transactions)
                 {
-                    TransactionId = x.TransactionID,
-                    TransactionAmount = x.TransactionAmount,
-                    TransactionDts = x.TransactionDTS,
-                    TransactionFundSourceId = x.TransactionFundSourceID,
-                    TransactionFundSourceName = x.TransactionFundSource.FundSourceName,
-                    TransactionIsCredit = x.TransactionIsCredit,
-                    TransactionTags = x.TransactionTags.Select(y => new Tag {TagId = y.TagID, TagName = context.Tags.Single(z => z.TagID == y.TagID).TagName}).ToList()
-                });
+                    var transactionTags =
+                        context.TransactionTag.Where(x => x.TransactionID == trans.TransactionID)
+                            .Select(
+                                x =>
+                                    new TransactionTag
+                                    {
+                                        TagID = x.TagID,
+                                        TransactionID = x.TransactionID,
+                                        TransactionTagID = x.TransactionTagID
+                                    });
+                    var tags = new List<Tag>();
+                    foreach (var tt in transactionTags)
+                    {
+                        tags.Add(context.Tags.Single(x => x.TagID == tt.TagID));
+                    }
+                    var singleTrans = new TransactionModel
+                    {
+                        TransactionAmount = trans.TransactionAmount,
+                        TransactionDts = trans.TransactionDTS,
+                        TransactionFundSourceId = trans.TransactionFundSourceID,
+                        TransactionId = trans.TransactionID,
+                        TransactionIsCredit = trans.TransactionIsCredit,
+                        TransactionUserId = trans.TransactionUserID,
+                        TransactionTags = 
+                    };
+                }
+            }
         }
 
         // GET api/transactions/5

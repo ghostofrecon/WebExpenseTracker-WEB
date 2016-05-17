@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using WebExpenseTracker_WEB.EF;
 using WebExpenseTracker_WEB.Models.API.TransactionTag;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,7 +17,16 @@ namespace WebExpenseTracker_WEB.Controllers
         [HttpGet]
         public IEnumerable<TransactionTag> Get()
         {
-            
+            var context = new WebExpenseTrackerContext();
+            return
+                context.TransactionTag.Select(
+                    x =>
+                        new Models.API.TransactionTag.TransactionTag
+                        {
+                            TagID = x.TagID,
+                            TransactionID = x.TransactionID,
+                            TransactionTagID = x.TransactionID
+                        });
         }
 
         // GET api/values/5

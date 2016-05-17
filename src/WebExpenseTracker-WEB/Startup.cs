@@ -99,6 +99,7 @@ namespace WebExpenseTracker_WEB
             app.UseStaticFiles();
 
             app.UseIdentity();
+            app.UseStatusCodePages();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
